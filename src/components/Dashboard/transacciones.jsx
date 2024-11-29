@@ -124,9 +124,9 @@ const Transacciones = () => {
           value={filtroFechaInicio}
           onChange={(e) => setFiltroFechaInicio(e.target.value)}
           disabled={loading}
-          type="date"
         />
         <input
+          type="date"
           value={filtroFechaFin}
           onChange={(e) => setFiltroFechaFin(e.target.value)}
           disabled={loading}
