@@ -1,9 +1,14 @@
 .pdf-viewer {
-    display: flex;
-    flex-direction: column;
+    position: fixed; /* Fija el componente en la pantalla */
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    position: relative; /* Asegúrate de que el contenedor sea relativo */
+    background-color: rgba(0, 0, 0, 0.8); /* Fondo oscuro semitransparente */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Ajusta el contenido dentro del modal */
+    z-index: 9999; /* Asegúrate de que esté por encima de otros elementos */
 }
 
 .pdf-header {
@@ -15,29 +20,60 @@
 }
 
 .zoom-controls {
-    position: fixed; /* Fijo en la parte inferior derecha */
-    bottom: 10px; /* Espacio desde la parte inferior */
-    right: 10px; /* Espacio desde la derecha */
-    background: rgba(255, 255, 255, 0.8); /* Fondo semi-transparente */
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    background: rgba(255, 255, 255, 0.8);
     padding: 5px 10px;
     border-radius: 5px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-    z-index: 1000; /* Asegúrate de que esté por encima de otros elementos */
+    z-index: 1000;
+}
+
+.pdf-content-wrapper {
+    display: flex;
+    position: relative;
+    flex-grow: 1;
+    overflow: hidden;
+    justify-content: center; /* Centrado del contenido PDF */
+    align-items: center; /* Centrado vertical */
 }
 
 .pdf-content {
     flex: 1;
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* Asegúrate de que alinee el contenido al inicio */
+    align-items: center;
     overflow: auto;
-    padding-bottom: 50px; /* Espacio para que no se solape con los controles de zoom */
-    transition: transform 0.2s ease-in-out; /* Añadir transición */
-    transform-origin: top center; /* Cambiar el origen de la transformación */
+    padding: 20px;
+    transition: transform 0.2s ease-in-out;
+    transform-origin: top center;
+    max-height: 100%; /* Limita la altura al 100% */
 }
 
+.thumbnails {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 120px;
+    height: 100%;
+    overflow-y: auto;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.7);
+    box-shadow: -3px 0 5px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+}
 
-.page-wrapper {
-    margin: 10px 0;
-    transition: transform 0.2s ease-in-out; /* Transición para cada página */
+.thumbnail {
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+}
+
+.thumbnail:hover {
+    transform: scale(1.1);
+}
+
+.thumbnail.active {
+    border: 2px solid #007bff;
 }

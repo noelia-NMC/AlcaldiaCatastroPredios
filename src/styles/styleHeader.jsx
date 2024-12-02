@@ -10,6 +10,13 @@ const colors = {
   celeste: '#00b4db',
 };
 
+export const UserRole = styled.div`
+  font-size: 0.9rem;
+  color: gray;
+  font-style: italic;
+`;
+
+
 export const UserInfoWrapper = styled.div`
   display: flex;
   align-items: center;

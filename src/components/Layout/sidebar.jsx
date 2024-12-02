@@ -35,7 +35,7 @@ const Sidebar = ({
       icon: FaBuilding 
     },
     { 
-      name: "Transacciones", 
+      name: "Reportes", 
       component: "transacciones", 
       icon: FaExchangeAlt 
     },

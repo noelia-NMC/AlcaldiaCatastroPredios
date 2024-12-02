@@ -164,4 +164,3 @@ export const Tr = styled.tr`
     border-bottom: none;
   }
 `;
-

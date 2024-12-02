@@ -13,14 +13,14 @@ export const theme = {
   warningLight: '#faad59',
   dangerLight: '#f05b80',
   textLight: '#666666',
-  border: '#e0e0e1',
+  border: '#e0e0e1'
 };
 
 export const FormContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  width: 80em;
+  display:flex;
+  flex-direction:column;
+  height:100%;
+  width:80em;
   margin: 1rem auto;
   border-radius: 12px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
@@ -35,12 +35,12 @@ export const Title = styled.h2`
 export const FlexContainer = styled.div`
   display: flex;
   gap: 0;
-  width: 100%;
-  height: 100%;
+  width:100%;
+  height:100%;
 `;
 
 export const SearchSection = styled.div`
-  flex: 0 0 30%;
+  flex: 0 0 30%; 
   background-color: #fff;
   border-radius: 8px;
   padding: 1rem;
@@ -48,7 +48,7 @@ export const SearchSection = styled.div`
 `;
 
 export const TableSection = styled.div`
-  flex: 0 0 30%;
+  flex: 0 0 30%; 
   height: 100%;
   overflow-y: auto;
   border-radius: 8px;
@@ -68,7 +68,7 @@ export const PDFViewerContainer = styled.div`
 export const SearchContainer = styled.div`
   margin-bottom: 1.5rem;
   display: flex;
-  flex-direction: row;
+  flex-direction:row;
   gap: 1em;
 `;
 
@@ -138,7 +138,7 @@ export const AddButton = styled.button`
   border-radius: 6px;
   cursor: pointer;
   font-size: 0.9rem;
-  width: 45%;
+  width:45%;
   transition: background-color 0.3s ease;
   &:hover {
     background-color: ${theme.secondaryLight};
@@ -189,8 +189,27 @@ export const ActionIcon = styled.span`
   }
 `;
 
+export const TabContainer = styled.div`
+  display: flex;
+  margin-bottom: 1rem;
+`;
+
+export const Tab = styled.button`
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  background-color: ${props => props.active ? theme.primary : '#f0f5f9'};
+  color: ${props => props.active ? 'white' : theme.primary};
+  border: none;
+  border-bottom: ${props => props.active ? 'none' : `2px solid ${theme.primary}`};
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  &:hover {
+    background-color: ${props => props.active ? theme.primaryLight : '#e0e5e9'};
+  }
+`;
+
 export const TabContent = styled.div`
-  display: block;
+  display: ${props => props.active ? 'block' : 'none'};
 `;
 
 export const ModalContent = styled.div`
@@ -305,27 +324,37 @@ export const FileInputLabel = styled.label`
 
 export const StyledFileList = styled.div`
   margin-top: 1rem;
-  padding: 0.5rem;
+  margin-bottom: 1rem;
+  overflow-y: auto;
   border: 1px solid ${theme.border};
   border-radius: 6px;
-  font-size: 0.9rem;
-  color: ${theme.textLight};
-  max-height: 150px;
-  overflow-y: auto;
+  padding: 0.5rem;
 
-  div {
-    padding: 0.5rem;
+  > div {
+    padding: 0.3rem 0;
     border-bottom: 1px solid ${theme.border};
-  }
-
-  div:last-child {
-    border-bottom: none;
+    &:last-child {
+      border-bottom: none;
+    }
   }
 `;
 
-export const SectionTitle = styled.h4`
-  color: ${theme.primary};
-  font-size: 1.2rem;
-  margin-bottom: 0.75rem;
-`;
+export const modalStyles = {
+  overlay: {
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+  },
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    transform: 'translate(-50%, -50%)',
+    padding: 0,
+    border: 'none',
+    background: 'none',
+  },
+};
 
+export const SectionTitle = styled.div`
+
+`;
