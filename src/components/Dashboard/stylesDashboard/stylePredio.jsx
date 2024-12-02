@@ -19,9 +19,8 @@ export const theme = {
 export const FormContainer = styled.div`
   display:flex;
   flex-direction:column;
-  height:100%;
-  width:80em;
-  margin: 1rem auto;
+  height:95%;
+  width:60em;
   border-radius: 12px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 `;
@@ -34,36 +33,30 @@ export const Title = styled.h2`
 
 export const FlexContainer = styled.div`
   display: flex;
-  gap: 0;
   width:100%;
   height:100%;
 `;
 
 export const SearchSection = styled.div`
-  flex: 0 0 30%; 
-  background-color: #fff;
+  height:40px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  background-color: #f8f8f9;
   border-radius: 8px;
-  padding: 1rem;
+  padding: 1rem 1em;
+  gap:8em;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 `;
 
 export const TableSection = styled.div`
-  flex: 0 0 30%; 
-  height: 100%;
-  overflow-y: auto;
+  display: flex;
+  justify-content: center; 
   border-radius: 8px;
   background-color: #fff;
   padding: 1rem;
 `;
 
-export const PDFViewerContainer = styled.div`
-  flex: 0 0 60%;
-  border-radius: 8px;
-  overflow: hidden;
-  background-color: #f8f9fa;
-  padding: 1rem;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-`;
 
 export const SearchContainer = styled.div`
   margin-bottom: 1.5rem;
@@ -74,6 +67,7 @@ export const SearchContainer = styled.div`
 
 export const SearchInput = styled.input`
   width: 80%;
+  height: 16px;
   padding: 0.7rem;
   border: 1px solid ${theme.border};
   border-radius: 6px;
@@ -138,7 +132,8 @@ export const AddButton = styled.button`
   border-radius: 6px;
   cursor: pointer;
   font-size: 0.9rem;
-  width:45%;
+  width:20%;
+  height:40px;
   transition: background-color 0.3s ease;
   &:hover {
     background-color: ${theme.secondaryLight};

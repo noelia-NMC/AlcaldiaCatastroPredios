@@ -17,9 +17,8 @@ import {
   FormContainer, Title, FlexContainer, SearchSection, TableSection, SearchContainer, SearchInput, DropdownButton, DropdownContent, DropdownItem,
   AddButton, Table, Th, Td, Tr, ModalContent, ModalTitle, Form, Input, Select, Button, ActionIcon, TabContent,
   SectionTitle, FileInput, FileInputLabel, modalStyles, ModalColumnsContainer, ModalColumn, StyledFileList, ButtonContainer,
-  PDFViewerContainer
 } from './stylesDashboard/stylePredio';
-import PDFViewer from './PDFViewer';
+
 
 Modal.setAppElement('#root');
 
@@ -298,11 +297,11 @@ const Predio = () => {
                     <Th>Código Catastral</Th>
                   </Tr>
                 </thead>
+                        <ActionIcon onClick={() => handleEdit(predio.IdPredio)}><FaEdit /></ActionIcon>
                 <tbody>
                   {filteredPredios.map(predio => (
                     <Tr key={predio.IdPredio}>
                       <Td>
-                        <ActionIcon onClick={() => handleEdit(predio.IdPredio)}><FaEdit /></ActionIcon>
                         <ActionIcon onClick={() => handleDelete(predio.IdPredio)}><FaTrash /></ActionIcon>
                         <ActionIcon onClick={() => handleViewPDF(predio.IdPredio)}><FaEye /></ActionIcon>
                         <ActionIcon onClick={() => openAdjuntoModal(predio.IdPredio)}><FaPlus /></ActionIcon>
@@ -317,9 +316,6 @@ const Predio = () => {
             </TabContent>
           </TableSection>
         </div>
-        <PDFViewerContainer>
-          {isViewerOpen && pdfBlob && <PDFViewer pdfBlob={pdfBlob} onClose={closeViewer} />}
-        </PDFViewerContainer>
       </FlexContainer>
   
       {/* Modal para Agregar/Editar Predio */}
