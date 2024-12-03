@@ -1,0 +1,13 @@
+{
+  "ConnectionStrings": {
+    "defaultConnection": "postgresql://postgres:4tmt1k3t$@172.16.66.103:5433/predios",
+    "defaultConnectionprod": "postgresql://postgres:4tmt1k3t$@172.16.66.103:5433/predios",
+    "ldap": {
+      "LdapHost": "172.16.67.4",
+      "LdapPort": 389,
+      "DomainName": "catastrocbba.com",
+      "User": "Administrator",
+      "Password": "r3b0rn"
+    }
+  }
+}
