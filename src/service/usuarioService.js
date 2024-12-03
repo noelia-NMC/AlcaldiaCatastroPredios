@@ -79,7 +79,10 @@ export const loginUsuario = async (username, password) => {
             }
         }
 
-        return await response.json();
+        const user = await response.json();
+        document.cookie = `id_u=${user.IDUsuario}; path=/`; // Guardar el IDUsuario en cookies
+        return user;
+        
     } catch (error) {
         console.error("Error en loginUsuario:", error);
         throw error;

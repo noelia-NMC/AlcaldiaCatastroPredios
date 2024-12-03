@@ -136,7 +136,7 @@ export const deletePredio = async (id) => {
 
 export const fetchPDFPredio = async (id) => {
     try {
-        const response = await fetch(`${url}predios/${id}/archivos/combinados`, {
+        const response = await fetch(`${url}12/predios/${id}/archivos/combinados`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/pdf'

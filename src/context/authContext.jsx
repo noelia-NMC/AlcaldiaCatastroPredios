@@ -1,4 +1,4 @@
-import { createContext, useState, useContext, useEffect } from "react";
+import { createContext, useState, useContext} from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 
@@ -45,23 +45,12 @@ export const rolesPredefinidos = [
 ];
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(() => {
-    const storedUser = localStorage.getItem("user");
-    return storedUser ? JSON.parse(storedUser) : null;
-  });
+  const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (user) {
-      localStorage.setItem("user", JSON.stringify(user));
-    } else {
-      localStorage.removeItem("user");
-    }
-  }, [user]);
-
-  const login = (data) => {
-    const { IDUsuario, role, username, fullName, avatar, permisos } = data;
-    setUser({ IDUsuario, role, username, fullName, avatar, permisos });
+  const login = (role, username, fullName) => {
+    const permisos = rolesPredefinidos.find(r => r.NombreRol === role)?.Permisos || [];
+    setUser({ role, username, fullName, permisos });
     navigate("/dashboard");
   };
 
@@ -94,7 +83,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, updateUser }}>
+    <AuthContext.Provider value={{ user,login, logout, updateUser }}>
       {children}
     </AuthContext.Provider>
   );

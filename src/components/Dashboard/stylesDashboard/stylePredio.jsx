@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 
+// Tema de colores
 export const theme = {
   primary: '#00a684',
   secondary: '#00b4db',
@@ -7,34 +8,40 @@ export const theme = {
   warning: '#f58a2f',
   danger: '#aa1c5d',
   info: '#00b4db',
+
   primaryLight: '#3ebeaa',
   secondaryLight: '#3cc3de',
   accentLight: '#685ca8',
   warningLight: '#faad59',
   dangerLight: '#f05b80',
+
   textLight: '#666666',
-  border: '#e0e0e1'
+  border: '#e0e0e1',
 };
 
+// Contenedores generales
 export const FormContainer = styled.div`
-  display:flex;
-  flex-direction:column;
-  height:95%;
-  width:60em;
+  max-width: 900px;
+  padding: 2em;
+  margin: 1rem auto;
   border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 `;
 
-export const Title = styled.h2`
-  color: ${theme.primary};
-  font-size: 1.8rem;
-  text-align: center;
+export const Header = styled.header`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid ${theme.primaryLight};
 `;
 
 export const FlexContainer = styled.div`
   display: flex;
-  width:100%;
-  height:100%;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 export const SearchSection = styled.div`
@@ -50,14 +57,15 @@ export const SearchSection = styled.div`
 `;
 
 export const TableSection = styled.div`
-  display: flex;
-  justify-content: center; 
+  overflow-x: auto;
+  margin-top: 1rem;
+  background: white;
   border-radius: 8px;
-  background-color: #fff;
   padding: 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 `;
 
-
+// Componentes de búsqueda
 export const SearchContainer = styled.div`
   margin-bottom: 1.5rem;
   display: flex;
@@ -115,241 +123,244 @@ export const DropdownContent = styled.div`
 `;
 
 export const DropdownItem = styled.div`
-  padding: 10px 12px;
-  font-size: 0.9rem;
-  color: ${theme.textLight};
-  cursor: pointer;
-  &:hover {
-    background-color: ${theme.primaryLight}20;
-  }
-`;
-
-export const AddButton = styled.button`
-  background-color: ${theme.secondary};
-  color: white;
-  border: none;
-  padding: 0.7rem;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  width:20%;
-  height:40px;
-  transition: background-color 0.3s ease;
-  &:hover {
-    background-color: ${theme.secondaryLight};
-  }
-`;
-
-export const Table = styled.table`
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-`;
-
-export const Th = styled.th`
-  position: sticky;
-  top: 0;
-  background-color: ${theme.primary};
-  color: white;
-  padding: 0.7rem;
-  text-align: left;
-  font-size: 0.9rem;
-`;
-
-export const Td = styled.td`
-  padding: 0.7rem;
-  border-bottom: 1px solid ${theme.border};
-  font-size: 0.9rem;
-  max-width: 100px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
-
-export const Tr = styled.tr`
-  &:nth-child(even) {
-    background-color: ${theme.primaryLight}10;
-  }
-  &:hover {
-    background-color: ${theme.primaryLight}20;
-  }
-`;
-
-export const ActionIcon = styled.span`
-  cursor: pointer;
-  margin-right: 8px;
-  color: ${theme.primary};
-  &:hover {
-    color: ${theme.secondary};
-  }
-`;
-
-export const TabContainer = styled.div`
-  display: flex;
-  margin-bottom: 1rem;
-`;
-
-export const Tab = styled.button`
   padding: 0.5rem 1rem;
-  font-size: 0.9rem;
-  background-color: ${props => props.active ? theme.primary : '#f0f5f9'};
-  color: ${props => props.active ? 'white' : theme.primary};
-  border: none;
-  border-bottom: ${props => props.active ? 'none' : `2px solid ${theme.primary}`};
   cursor: pointer;
-  transition: background-color 0.3s ease;
+
   &:hover {
-    background-color: ${props => props.active ? theme.primaryLight : '#e0e5e9'};
+    background: ${theme.primaryLight}10;
   }
 `;
 
-export const TabContent = styled.div`
-  display: ${props => props.active ? 'block' : 'none'};
-`;
-
-export const ModalContent = styled.div`
-  background-color: #fff;
-  padding: 1.5rem;
-  border-radius: 12px;
-  width: 90%;
-  max-width: 800px;
-  max-height: 80vh;
-  overflow-y: auto;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-`;
-
-export const ModalTitle = styled.h3`
-  color: ${theme.primary};
-  margin-bottom: 1.25rem;
-  font-size: 1.5rem;
-  text-align: center;
-`;
-
-export const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-`;
-
-export const ModalColumnsContainer = styled.div`
-  display: flex;
-  gap: 1rem;
-  @media (max-width: 768px) {
-    flex-direction: column;
-  }
-`;
-
-export const ModalColumn = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-`;
-
-export const Input = styled.input`
-  width: 100%;
-  padding: 0.7rem;
-  border: 1px solid ${theme.border};
+// Botones y otros componentes interactivos
+export const AddButton = styled.button`
+  padding: 0.6rem;
+  background: ${theme.primary};
+  color: white;
+  border: none;
   border-radius: 6px;
-  font-size: 0.9rem;
-  color: ${theme.textLight};
-  transition: all 0.2s ease;
+  font-size: 0.8rem;
+  cursor: pointer;
 
-  &:focus {
-    outline: none;
-    border-color: ${theme.primary};
-    box-shadow: 0 0 0 2px ${theme.primaryLight}40;
-  }
-`;
-
-export const Select = styled.select`
-  width: 100%;
-  padding: 0.7rem;
-  border: 1px solid ${theme.border};
-  border-radius: 6px;
-  font-size: 0.9rem;
-  color: ${theme.textLight};
-  background-color: white;
-  transition: all 0.2s ease;
-
-  &:focus {
-    outline: none;
-    border-color: ${theme.primary};
-    box-shadow: 0 0 0 2px ${theme.primaryLight}40;
+  &:hover {
+    filter: brightness(105%);
   }
 `;
 
 export const ButtonContainer = styled.div`
   display: flex;
+  gap: 0.5rem;
   justify-content: flex-end;
-  gap: 1rem;
 `;
 
-export const Button = styled.button`
-  background-color: ${props => theme[props.variant] || theme.primary};
-  color: white;
+export const ActionIcon = styled.button`
+  background: none;
   border: none;
-  padding: 0.7rem 1.25rem;
-  border-radius: 6px;
-  font-size: 0.9rem;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  color: ${({ color }) => theme[color] || theme.textLight};
+  padding: 0.5rem;
+  border-radius: 50%;
+
   &:hover {
-    background-color: ${props => theme[`${props.variant}Light`] || theme.primaryLight};
+    background: ${theme.primaryLight}10;
+    color: ${theme.primary};
   }
 `;
 
+// Tab y secciones
+export const TabContent = styled.div`
+  padding: 1rem;
+  border: 1px solid ${theme.border};
+  border-radius: 8px;
+`;
+
+export const SectionTitle = styled.h3`
+  font-size: 1rem;
+  font-weight: 600;
+  color: ${theme.accent};
+`;
+
+// Inputs para archivos
 export const FileInput = styled.input`
   display: none;
 `;
 
 export const FileInputLabel = styled.label`
-  display: inline-block;
-  padding: 0.7rem 1.25rem;
-  background-color: ${theme.secondary};
-  color: white;
+  padding: 0.5rem 1rem;
+  border: 1px dashed ${theme.border};
   border-radius: 6px;
+  display: inline-block;
   cursor: pointer;
-  font-size: 0.9rem;
-  transition: background-color 0.3s ease;
+  text-align: center;
+  font-size: 0.8rem;
+  color: ${theme.textLight};
+
   &:hover {
-    background-color: ${theme.secondaryLight};
+    background: ${theme.primaryLight}10;
+    border-color: ${theme.primary};
   }
 `;
 
-export const StyledFileList = styled.div`
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-  overflow-y: auto;
-  border: 1px solid ${theme.border};
-  border-radius: 6px;
-  padding: 0.5rem;
+export const StyledFileList = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+  font-size: 0.8rem;
 
-  > div {
-    padding: 0.3rem 0;
+  li {
+    padding: 0.5rem;
     border-bottom: 1px solid ${theme.border};
+
     &:last-child {
       border-bottom: none;
     }
   }
 `;
 
+// Modal
+export const ModalContent = styled.div`
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+`;
+
+export const ModalTitle = styled.h3`
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: ${theme.accent};
+  margin-bottom: 1rem;
+`;
+
+export const ModalColumnsContainer = styled.div`
+  display: flex;
+  gap: 1.5rem;
+`;
+
+export const ModalColumn = styled.div`
+  flex: 1;
+`;
+
+// PDF Viewer
+export const PDFViewerContainer = styled.div`
+  width: 100%;
+  height: 600px;
+  overflow: hidden;
+  border: 1px solid ${theme.border};
+  border-radius: 6px;
+  background: white;
+`;
+
 export const modalStyles = {
   overlay: {
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    zIndex: 1000,
   },
   content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    transform: 'translate(-50%, -50%)',
-    padding: 0,
-    border: 'none',
-    background: 'none',
+    borderRadius: '12px',
+    padding: '2rem',
+    maxWidth: '600px',
+    margin: 'auto',
   },
 };
 
-export const SectionTitle = styled.div`
+// Definición del componente Button
+export const Button = styled.button`
+  padding: 0.6rem;
+  background: #00a684;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
 
+  &:hover {
+    filter: brightness(105%);
+  }
+`;
+
+// Definición del componente Form
+export const Form = styled.form`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin: 1rem 0;
+  padding: 1rem;
+  border: 1px solid #e0e0e1;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+`;
+
+export const Input = styled.input`
+  width: 100%;
+  padding: 0.625rem 1rem;
+  border: 1px solid #e0e0e1;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  transition: all 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: #00a684;
+    box-shadow: 0 0 0 2px #3ebeaa40;
+  }
+
+  &::placeholder {
+    color: #666666;
+  }
+`;
+
+
+export const Select = styled.select`
+  width: 100%;
+  padding: 0.625rem 1rem;
+  border: 1px solid #e0e0e1;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  transition: all 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: #00a684;
+    box-shadow: 0 0 0 2px #3ebeaa40;
+  }
+`;
+
+export const Table = styled.table`
+   width: 100%;
+  font-size: 0.8rem;
+`;
+
+export const Th = styled.th`
+  background: ${theme.primary};
+  color: white;
+  padding: 0.5rem;
+  font-weight: 600;
+  text-transform: uppercase;
+`;
+
+export const Td = styled.td`
+  padding: 0.875rem 0.75rem;
+  border-bottom: 2px solid ${theme.border};
+`;
+
+export const Tr = styled.tr`
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: ${theme.primaryLight}10;
+  }
+
+  &:last-child td {
+    border-bottom: none;
+  }
+`;
+
+export const Title = styled.h2`
+  color: ${theme.primary};
+  font-size: 1.5rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 `;

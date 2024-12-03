@@ -17,14 +17,16 @@ import {
   FormContainer, Title, FlexContainer, SearchSection, TableSection, SearchContainer, SearchInput, DropdownButton, DropdownContent, DropdownItem,
   AddButton, Table, Th, Td, Tr, ModalContent, ModalTitle, Form, Input, Select, Button, ActionIcon, TabContent,
   SectionTitle, FileInput, FileInputLabel, modalStyles, ModalColumnsContainer, ModalColumn, StyledFileList, ButtonContainer,
+  PDFViewerContainer
 } from './stylesDashboard/stylePredio';
-
+import PDFViewer from './PDFViewer';
 
 Modal.setAppElement('#root');
 
 const Predio = () => {
   const [predios, setPredios] = useState([]);
   const [predio, setPredio] = useState({
+    IdPredio: 0,
     SubD: 0,
     Manzano: 0,
     NumeroPredio: 0,
@@ -96,12 +98,31 @@ const Predio = () => {
     }
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setPredio((prev) => ({
-      ...prev,
-      [name]: value,
+  const autofillFromCodCatastral = (codCatastral) => {
+    setPredio(prevPredio => ({
+      ...prevPredio,
+      CodCatastral: codCatastral,
+      SubD: codCatastral.slice(0, 2),
+      Manzano: codCatastral.slice(2, 5),
+      NumeroPredio: codCatastral.slice(5, 8),
+      Uso: codCatastral.slice(8, 9),
+      Bloque: codCatastral.slice(9, 11),
+      Planta: codCatastral.slice(11, 14),
+      UnidadCat: codCatastral.slice(14, 17)
     }));
+  };
+  
+  const handleChange = (e) => {
+    const { name, value, type } = e.target;
+    if (name === 'CodCatastral') {
+      const codCatastral = value.replace(/[^0-9]/g, '').slice(0, 17);
+      autofillFromCodCatastral(codCatastral);
+    } else {
+      setPredio({
+        ...predio,
+        [name]: type === 'checkbox' ? e.target.checked : value,
+      });
+    }
   };
 
   const handlePropietarioChange = (e) => {
@@ -126,6 +147,7 @@ const Predio = () => {
       toast.error(`Error al cargar el PDF: ${error.message}`);
     }
   };
+  
 
   const closeViewer = () => {
     setIsViewerOpen(false);
@@ -146,6 +168,7 @@ const Predio = () => {
             NumAdjunto: adjuntos.length + 1,
             Tipo: file.type.split('/').pop(),
         };
+        console.log(adjuntoData);
 
         await createadjuntos(adjuntoData, file);
         toast.success('Adjunto guardado correctamente.');
@@ -163,7 +186,7 @@ const Predio = () => {
             ...predio,
             IdPropietario: parseInt(propietario.Ci, 10) || 0,
         };
-  
+        console.log(predioData);
         await createPredio(predioData, file);
         toast.success('Predio creado correctamente.');
   
@@ -200,6 +223,7 @@ const Predio = () => {
 
   const resetForm = () => {
     setPredio({
+      IdPredio: 0,
       SubD: 0,
       Manzano: 0,
       NumeroPredio: 0,
@@ -293,19 +317,22 @@ const Predio = () => {
                 <thead>
                   <Tr>
                     <Th>Acciones</Th>
+                    <Th>Id predio</Th>
                     <Th>Propietario</Th>
                     <Th>Código Catastral</Th>
+                    
                   </Tr>
                 </thead>
-                        <ActionIcon onClick={() => handleEdit(predio.IdPredio)}><FaEdit /></ActionIcon>
                 <tbody>
                   {filteredPredios.map(predio => (
                     <Tr key={predio.IdPredio}>
                       <Td>
+                        <ActionIcon onClick={() => handleEdit(predio.IdPredio)}><FaEdit /></ActionIcon>
                         <ActionIcon onClick={() => handleDelete(predio.IdPredio)}><FaTrash /></ActionIcon>
                         <ActionIcon onClick={() => handleViewPDF(predio.IdPredio)}><FaEye /></ActionIcon>
                         <ActionIcon onClick={() => openAdjuntoModal(predio.IdPredio)}><FaPlus /></ActionIcon>
                       </Td>
+                      <Td>{predio.IdPredio}</Td>
                       <Td>{predio.Propietario}</Td>
                       <Td>{predio.CodCatastral}</Td>
                       
@@ -316,6 +343,9 @@ const Predio = () => {
             </TabContent>
           </TableSection>
         </div>
+        <PDFViewerContainer style={{ display: isViewerOpen ? 'block' : 'none' }}>
+          {isViewerOpen && pdfBlob && <PDFViewer pdfBlob={pdfBlob} onClose={closeViewer} />}
+        </PDFViewerContainer>
       </FlexContainer>
   
       {/* Modal para Agregar/Editar Predio */}
@@ -326,19 +356,20 @@ const Predio = () => {
             <ModalColumnsContainer>
               <ModalColumn>
                 <SectionTitle>Datos del Predio</SectionTitle>
-               <Input type="number" name="SubD" placeholder="SubD" value={predio.SubD} onChange={handleChange} required />
-                <Input type="number" name="Manzano" placeholder="Manzano" value={predio.Manzano} onChange={handleChange} required />
-                <Input type="number" name="NumeroPredio" placeholder="Número de Predio" value={predio.NumeroPredio} onChange={handleChange} required />
-                <Input type="number" name="Bloque" placeholder="Bloque" value={predio.Bloque} onChange={handleChange} required />
-                <Input type="number" name="UnidadCat" placeholder="Unidad Catastral" value={predio.UnidadCat} onChange={handleChange} required />
-                <Input type="text" name="CodCatastral" placeholder="Código Catastral" value={predio.CodCatastral} onChange={handleChange} maxLength={17} required />
+                <Input type="text" name="CodCatastral" placeholder="Código Catastral" value={predio.CodCatastral} onChange={handleChange} maxLength={17} required />   
+                <Input type="text" name="IdPredio" placeholder="IdPredio" value={predio.IdPredio} onChange={handleChange} required />
+                <Input type="text" name="Manzano" placeholder="Manzano" value={predio.Manzano} onChange={handleChange} required />
+                <Input type="text" name="NumeroPredio" placeholder="Número de Predio" value={predio.NumeroPredio} onChange={handleChange} required />
+                <Input type="text" name="Bloque" placeholder="Bloque" value={predio.Bloque} onChange={handleChange} required />
+                <Input type="text" name="UnidadCat" placeholder="Unidad Catastral" value={predio.UnidadCat} onChange={handleChange} required />
+                <Input type="text" name="SubD" placeholder="SubD" value={predio.SubD} onChange={handleChange} required />
                 <Select name="TipoPredio" value={predio.TipoPredio} onChange={handleChange} required>
                   <option value="">Seleccionar Tipo de Predio</option>
                   {tipoPredioOptions.map(option => (
                     <option key={option} value={option}>{option}</option>
                   ))}
                 </Select>
-                <Input type="number" name="Superficie" placeholder="Superficie" value={predio.Superficie} onChange={handleChange} required />
+                <Input type="text" name="Superficie" placeholder="Superficie" value={predio.Superficie} onChange={handleChange} required />
                 <Input type="date" name="FechaAprobacion" placeholder="Fecha de Aprobación" value={predio.FechaAprobacion} onChange={handleChange} required />
                 <Select name="DocumentoAprobador" value={predio.DocumentoAprobador} onChange={handleChange} required>
                   <option value="">Seleccionar Documento Aprobador</option>

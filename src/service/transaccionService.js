@@ -1,48 +1,26 @@
 import { url } from "./http";
 
-// Obtener las transacciones con los filtros
+// Manejo centralizado de respuestas
+const handleResponse = async (response) => {
+    if (!response.ok) {
+        const errorDetails = await response.text();
+        throw new Error(`HTTP ${response.status}: ${errorDetails}`);
+    }
+    return await response.json();
+};
+
+// Obtener las transacciones con filtros
 export const fetchTransacciones = async (fechaInicio, fechaFin, idUsuario) => {
-    let queryParams = new URLSearchParams();
-
-    // Formatear fechas en formato ISO
-    if (fechaInicio) {
-        const fecha = new Date(fechaInicio);
-        fecha.setHours(0, 0, 0, 0);
-        queryParams.append('fechaInicio', fecha.toISOString());
-    }
-
-    if (fechaFin) {
-        const fecha = new Date(fechaFin);
-        fecha.setHours(23, 59, 59, 999);
-        queryParams.append('fechaFin', fecha.toISOString());
-    }
-
-    if (idUsuario) {
-        queryParams.append('idUsuario', idUsuario);
-    }
+    const queryParams = new URLSearchParams();
+    if (fechaInicio) queryParams.append("fechaInicio", fechaInicio);
+    if (fechaFin) queryParams.append("fechaFin", fechaFin);
+    if (idUsuario) queryParams.append("idUsuario", idUsuario);
 
     try {
         const response = await fetch(`${url}transacciones?${queryParams}`);
-        if (!response.ok) {
-            throw new Error('Error al obtener transacciones');
-        }
-        return await response.json();
+        return await handleResponse(response);
     } catch (error) {
-        console.error(error);
-        throw error;
-    }
-};
-
-// Obtener todos los usuarios
-export const fetchUsuarios = async () => {
-    try {
-        const response = await fetch(`${url}Usuarios`);
-        if (!response.ok) {
-            throw new Error('Error al obtener usuarios');
-        }
-        return await response.json();
-    } catch (error) {
-        console.error(error);
+        console.error("Error al obtener transacciones:", error);
         throw error;
     }
 };
@@ -51,12 +29,23 @@ export const fetchUsuarios = async () => {
 export const fetchTransaccion = async (id) => {
     try {
         const response = await fetch(`${url}transacciones/${id}`);
+        return await handleResponse(response);
+    } catch (error) {
+        console.error("Error al obtener la transacción:", error);
+        throw error;
+    }
+};
+
+// Obtener todos los usuarios
+export const fetchUsuarios = async () => {
+    try {
+        const response = await fetch(`${url}usuarios`);
         if (!response.ok) {
-            throw new Error('Error al obtener la transacción');
+            throw new Error('Error al obtener usuarios');
         }
         return await response.json();
     } catch (error) {
-        console.error(error);
+        console.error("Error al obtener usuarios:", error);
         throw error;
     }
 };
