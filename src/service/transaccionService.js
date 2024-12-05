@@ -1,4 +1,5 @@
 import { url } from "./http";
+import { getCookie } from "../utils/cookies";
 
 // Manejo centralizado de respuestas
 const handleResponse = async (response) => {
@@ -10,11 +11,16 @@ const handleResponse = async (response) => {
 };
 
 // Obtener las transacciones con filtros
-export const fetchTransacciones = async (fechaInicio, fechaFin, idUsuario) => {
+export const fetchTransacciones = async (fechaInicio, fechaFin) => {
+    const idUsuario = getCookie("id_u"); // Obtener el usuario desde las cookies
+    if (!idUsuario) {
+        throw new Error("El ID del usuario no está disponible.");
+    }
+
     const queryParams = new URLSearchParams();
     if (fechaInicio) queryParams.append("fechaInicio", fechaInicio);
     if (fechaFin) queryParams.append("fechaFin", fechaFin);
-    if (idUsuario) queryParams.append("idUsuario", idUsuario);
+    queryParams.append("idUsuario", idUsuario);
 
     try {
         const response = await fetch(`${url}transacciones?${queryParams}`);

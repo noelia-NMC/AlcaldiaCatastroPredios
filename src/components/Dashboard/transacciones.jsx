@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { fetchTransacciones, fetchUsuarios } from "../../service/transaccionService";
+import { fetchTransacciones } from "../../service/transaccionService";
 import * as XLSX from "xlsx"; // Para exportar Excel
 import jsPDF from "jspdf"; // Para exportar PDF
 import "jspdf-autotable"; // Tabla para PDF
@@ -7,25 +7,21 @@ import { Container, Title, FilterContainer, Button, TransaccionesTable } from ".
 
 const Transacciones = () => {
   const [transacciones, setTransacciones] = useState([]);
-  const [usuarios, setUsuarios] = useState([]);
-  const [filtros, setFiltros] = useState({ fechaInicio: "", fechaFin: "", idUsuario: "" });
+  const [filtros, setFiltros] = useState({ fechaInicio: "", fechaFin: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  // Cargar transacciones cuando los filtros cambien
   useEffect(() => {
     const loadData = async () => {
       setLoading(true);
       setError("");
       try {
-        const [transaccionesData, usuariosData] = await Promise.all([
-          fetchTransacciones(filtros.fechaInicio, filtros.fechaFin, filtros.idUsuario),
-          fetchUsuarios(),
-        ]);
-        setTransacciones(transaccionesData);
-        setUsuarios(usuariosData);
+        const data = await fetchTransacciones(filtros.fechaInicio, filtros.fechaFin);
+        setTransacciones(data);
       } catch (error) {
         console.error("Error al cargar datos:", error);
-        setError("Error al cargar los datos");
+        setError("Error al cargar las transacciones.");
       } finally {
         setLoading(false);
       }
@@ -39,18 +35,13 @@ const Transacciones = () => {
   };
 
   const limpiarFiltros = () => {
-    setFiltros({ fechaInicio: "", fechaFin: "", idUsuario: "" });
-  };
-
-  const obtenerNombreUsuario = (idUsuario) => {
-    const usuario = usuarios.find((u) => u.IDUsuario === idUsuario);
-    return usuario ? `${usuario.Nombre} ${usuario.Appat || ""} (${usuario.Username})` : "Desconocido";
+    setFiltros({ fechaInicio: "", fechaFin: "" });
   };
 
   const exportarExcel = () => {
     const data = transacciones.map((t) => ({
       Fecha: new Date(t.FechaHora).toLocaleString(),
-      Usuario: obtenerNombreUsuario(t.IDUsuario),
+      Usuario: t.IDUsuario,
       Acción: t.TipoAccion,
       Descripción: t.Descripcion,
       "Entidad Afectada": t.EntidadAfectada,
@@ -72,7 +63,7 @@ const Transacciones = () => {
     const headers = [["Fecha", "Usuario", "Acción", "Descripción", "Entidad Afectada", "ID Entidad"]];
     const data = transacciones.map((t) => [
       new Date(t.FechaHora).toLocaleString(),
-      obtenerNombreUsuario(t.IDUsuario),
+      t.IDUsuario,
       t.TipoAccion,
       t.Descripcion,
       t.EntidadAfectada || "",
@@ -105,13 +96,6 @@ const Transacciones = () => {
           value={filtros.fechaFin}
           onChange={handleFiltroChange}
         />
-        <input
-          type="text"
-          name="idUsuario"
-          placeholder="ID Usuario"
-          value={filtros.idUsuario}
-          onChange={handleFiltroChange}
-        />
         <Button onClick={limpiarFiltros}>Limpiar</Button>
       </FilterContainer>
       {loading ? (
@@ -139,7 +123,7 @@ const Transacciones = () => {
               {transacciones.map((t) => (
                 <tr key={t.IDTransaccion}>
                   <td>{new Date(t.FechaHora).toLocaleString()}</td>
-                  <td>{obtenerNombreUsuario(t.IDUsuario)}</td>
+                  <td>{t.IDUsuario}</td>
                   <td>{t.TipoAccion}</td>
                   <td>{t.Descripcion}</td>
                   <td>{t.EntidadAfectada}</td>
