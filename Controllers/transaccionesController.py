@@ -1,9 +1,11 @@
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
 from Models.transaccion import TransaccionDB
+from Models.usuario import UsuarioDB
 from database import SessionLocal
 from typing import List, Optional
 from datetime import datetime
+from sqlalchemy.orm import aliased
 
 router = APIRouter()
 
@@ -21,12 +23,9 @@ def listar_transacciones(
     idUsuario: Optional[int] = None,
     db: Session = Depends(get_db),
 ):
-    """
-    Lista las transacciones con filtros opcionales.
-    """
     query = db.query(TransaccionDB)
 
-    # Filtros opcionales
+    # Filtrar por fecha de inicio y fin
     if fechaInicio:
         try:
             fecha_inicio_dt = datetime.fromisoformat(fechaInicio)
@@ -44,10 +43,22 @@ def listar_transacciones(
     if idUsuario:
         query = query.filter(TransaccionDB.IDUsuario == idUsuario)
 
-    # Ordenar por fecha descendente
-    transacciones = query.order_by(TransaccionDB.FechaHora.desc()).all()
+    # Traer datos con nombres de usuarios
+    transacciones = query.all()
 
-    return transacciones
+    return [
+        {
+            "IDTransaccion": t.IDTransaccion,
+            "IDUsuario": t.IDUsuario,
+            "NombreUsuario": db.query(UsuarioDB.Nombre).filter(UsuarioDB.IDUsuario == t.IDUsuario).scalar(),
+            "FechaHora": t.FechaHora,
+            "TipoAccion": t.TipoAccion,
+            "Descripcion": t.Descripcion,
+            "EntidadAfectada": t.EntidadAfectada,
+            "IDEntidadAfectada": t.IDEntidadAfectada,
+        }
+        for t in transacciones
+    ]
 
 
 @router.get("/api/transacciones/{transaccion_id}", tags=["transacciones"])

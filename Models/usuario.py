@@ -1,4 +1,3 @@
-# models/usuario.py
 from sqlalchemy import Column, Integer, String, Boolean
 from sqlalchemy.ext.declarative import declarative_base
 from pydantic import BaseModel
@@ -18,6 +17,7 @@ class UsuarioDB(Base):
     Password = Column(String)
     Estado = Column(Boolean, default=True)
     IdRol = Column(Integer, nullable=False)
+    Avatar = Column(String, nullable=True)  # Agregada la columna Avatar
 
 
 class Usuario(BaseModel):
@@ -29,6 +29,7 @@ class Usuario(BaseModel):
     Password: str
     Estado: bool
     IdRol: int
+    Avatar: Optional[str] = None  # Agregada la columna Avatar al modelo Pydantic
 
     class Config:
         orm_mode = True
