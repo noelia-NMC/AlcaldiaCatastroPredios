@@ -46,7 +46,7 @@ export const createPredio = async (predio, file) => {
 
     try {
         // Enviar la solicitud POST con los parámetros en el cuerpo de la solicitud
-        const response = await fetch(`${url}predios/`, {
+        const response = await fetch(`${url}12/predios/`, {
             method: 'POST',
             body: formData,
         });

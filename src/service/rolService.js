@@ -21,33 +21,32 @@ export const fetchRol = async (id) => {
 // Crear un nuevo rol
 export const createRol = async (id_u, rol) => {
     const { NombreRol, Estado, Permisos } = rol;
+
     const rolData = {
-      NombreRol,
-      Estado: Boolean(Estado),
-      Permisos: Permisos.map(p => String(p)),
+        NombreRol,
+        Estado: Boolean(Estado),
+        Permisos: Array.isArray(Permisos) ? Permisos.map(p => String(p)) : [], // Asegúrate de que sea un array
     };
-  
-    const response = await fetch(`${url}${id_u}/roles/`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(rolData),
+
+    const response = await fetch(`http://localhost:8000/api/${id_u}/roles/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(rolData),
     });
-  
+
+    console.log(rolData);  // Verifica que todos los campos requeridos estén aquí
+
     if (!response.ok) {
-      const errorData = await response.json();
-      console.error("Error detallado desde el backend:", errorData.detail);
-      if (errorData.detail) {
-        errorData.detail.forEach((err) => {
-          console.log(`Campo con error: ${err.loc.join('.')} - Mensaje: ${err.msg}`);
-        });
-      }
-      throw new Error(errorData.detail.map(err => err.msg).join(" | ") || 'Error al crear el rol');
+        const errorData = await response.json();
+        console.error("Error detallado desde el backend:", errorData);
+        throw new Error(errorData.detail || 'Error al crear el rol');
     }
-  
+
     return response.json();
 };
+
 
 // Actualizar un rol existente
 export const updateRol = async (id_u, id, rol) => {
@@ -61,11 +60,14 @@ export const updateRol = async (id_u, id, rol) => {
 
     if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || 'Error al actualizar el rol');
+        console.error("Error detallado desde el backend:", errorData);
+        throw new Error(errorData.detail || 'Error al crear el rol');
     }
+    
 
     return response.json();
 };
+
 
 // Eliminar un rol
 export const deleteRol = async (id_u, id) => {

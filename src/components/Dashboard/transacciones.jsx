@@ -17,17 +17,24 @@ const Transacciones = () => {
       setLoading(true);
       setError("");
       try {
+        if (filtros.fechaInicio && filtros.fechaFin && new Date(filtros.fechaInicio) > new Date(filtros.fechaFin)) {
+          setError("La fecha de inicio no puede ser mayor que la fecha de fin.");
+          return;
+        }
         const data = await fetchTransacciones(filtros.fechaInicio, filtros.fechaFin);
         setTransacciones(data);
       } catch (error) {
-        console.error("Error al cargar datos:", error);
+        console.error("Error al cargar transacciones:", error);
         setError("Error al cargar las transacciones.");
       } finally {
         setLoading(false);
       }
     };
+
+
     loadData();
   }, [filtros]);
+
 
   const handleFiltroChange = (e) => {
     const { name, value } = e.target;
@@ -41,7 +48,7 @@ const Transacciones = () => {
   const exportarExcel = () => {
     const data = transacciones.map((t) => ({
       Fecha: new Date(t.FechaHora).toLocaleString(),
-      Usuario: t.IDUsuario,
+      Usuario: t.NombreUsuario || "Usuario Desconocido",
       Acción: t.TipoAccion,
       Descripción: t.Descripcion,
       "Entidad Afectada": t.EntidadAfectada,
@@ -53,6 +60,7 @@ const Transacciones = () => {
     XLSX.writeFile(workbook, "reporte_transacciones.xlsx");
   };
 
+
   const exportarPDF = () => {
     const doc = new jsPDF();
     doc.setFontSize(18);
@@ -63,7 +71,7 @@ const Transacciones = () => {
     const headers = [["Fecha", "Usuario", "Acción", "Descripción", "Entidad Afectada", "ID Entidad"]];
     const data = transacciones.map((t) => [
       new Date(t.FechaHora).toLocaleString(),
-      t.IDUsuario,
+      t.NombreUsuario || "Usuario Desconocido",
       t.TipoAccion,
       t.Descripcion,
       t.EntidadAfectada || "",
@@ -123,7 +131,7 @@ const Transacciones = () => {
               {transacciones.map((t) => (
                 <tr key={t.IDTransaccion}>
                   <td>{new Date(t.FechaHora).toLocaleString()}</td>
-                  <td>{t.IDUsuario}</td>
+                  <td>{t.NombreUsuario || "Usuario Desconocido"}</td>
                   <td>{t.TipoAccion}</td>
                   <td>{t.Descripcion}</td>
                   <td>{t.EntidadAfectada}</td>
@@ -132,6 +140,7 @@ const Transacciones = () => {
               ))}
             </tbody>
           </TransaccionesTable>
+
         </>
       )}
     </Container>

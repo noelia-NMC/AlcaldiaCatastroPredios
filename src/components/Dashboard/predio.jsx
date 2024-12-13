@@ -12,7 +12,8 @@ import {
   fetchPDFPredio,
 } from '../../service/predioService';
 import { createPropietario } from '../../service/propietarioService';
-import { createadjuntos } from '../../service/adjuntoService';
+import { createAdjunto } from '../../service/adjuntoService';
+
 import {
   FormContainer, Title, FlexContainer, SearchSection, TableSection, SearchContainer, SearchInput, DropdownButton, DropdownContent, DropdownItem,
   AddButton, Table, Th, Td, Tr, ModalContent, ModalTitle, Form, Input, Select, Button, ActionIcon, TabContent,
@@ -170,7 +171,7 @@ const Predio = () => {
         };
         console.log(adjuntoData);
 
-        await createadjuntos(adjuntoData, file);
+        await createAdjunto(adjuntoData, file);
         toast.success('Adjunto guardado correctamente.');
         closeAdjuntoModal();
     } catch (error) {

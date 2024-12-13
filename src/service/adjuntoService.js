@@ -1,121 +1,92 @@
 import { url } from "./http";
 
-export const fetchadjuntos = async () => {
-    const response = await fetch(`${url}adjuntos`);
+export const fetchAdjuntos = async (id_u) => {
+    const response = await fetch(`${url}${id_u}/adjuntos`);
     if (!response.ok) {
         throw new Error('Error al obtener adjuntos');
     }
     return response.json();
 };
 
-export const fetchadjunto = async (id) => {
-    const response = await fetch(`${url}adjuntos/${id}`);
+export const fetchAdjunto = async (id_u, id) => {
+    const response = await fetch(`${url}${id_u}/adjuntos/${id}`);
     if (!response.ok) {
         throw new Error('Error al obtener el adjunto');
     }
     return response.json();
 };
 
-
-export const createadjuntos = async (adjunto, file) => {
-    // Verificación de que el archivo sea válido
+export const createAdjunto = async (id_u, adjunto, file) =>{
     if (!file || !(file instanceof File)) {
         throw new Error('El archivo debe ser válido');
     }
 
     const formData = new FormData();
-    
-    // Añadir los datos del adjunto
     formData.append('IdPredio', parseInt(adjunto.IdPredio, 10));
     formData.append('NumAdjunto', adjunto.NumAdjunto || 1);
-    formData.append('Tipo', adjunto.Tipo || file.type.split('/').pop()); // Extrae la extensión del tipo MIME
-
-    // Verificación de archivo obligatorio
-    if (file) {
-        formData.append('file', file);
-    } else {
-        throw new Error('El archivo es obligatorio para adjuntar');
-    }
+    formData.append('Tipo', adjunto.Tipo || file.type.split('/').pop());
+    formData.append('file', file);
 
     try {
-        // Llamada a la API para crear el adjunto
-        const response = await fetch(`${url}adjuntos`, {
+        const response = await fetch(`${url}${id_u}/adjuntos`, {
             method: 'POST',
             body: formData,
         });
 
-        // Verificar si la respuesta fue exitosa
         if (!response.ok) {
             const errorText = await response.text();
             throw new Error(`Error al crear el adjunto: ${errorText}`);
         }
 
-        // Retornar el resultado exitoso de la API
         return await response.json();
     } catch (error) {
-        console.error('Error en createadjuntos:', error);  // Error detallado en consola
-        throw error;  // Re-lanzar el error para manejarlo en otro lugar
+        console.error('Error en createAdjunto:', error);
+        throw error;
     }
 };
 
-
-export const updateadjuntos = async (id, adjunto) => {
-    const predioToSend = {
+export const updateAdjunto = async (id_u, id, adjunto) => {
+    const adjuntoToSend = {
         ...adjunto,
         Tipo: parseInt(adjunto.Tipo),
-        NumeroAdjunto: parseInt(adjunto.SubD),
+        NumeroAdjunto: parseInt(adjunto.NumAdjunto),
     };
 
-    console.log('Datos enviados al servidor para actualización:', predioToSend);
-
     try {
-        const response = await fetch(`${url}adjuntos/${id}`, {
+        const response = await fetch(`${url}${id_u}/adjuntos/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(predioToSend)
+            body: JSON.stringify(adjuntoToSend)
         });
 
         if (!response.ok) {
             const errorText = await response.text();
-            console.error('Error al actualizar el predio:', errorText);
-            throw new Error(`Error al actualizar el predio: ${errorText}`);
+            throw new Error(`Error al actualizar el adjunto: ${errorText}`);
         }
 
-        if (response.status === 204) {
-            return true; // Éxito, pero sin contenido
-        }
-
-        return await response.json(); // Devuelve el predio actualizado si hay contenido
+        return response.status === 204 ? true : await response.json();
     } catch (error) {
         console.error('Error en la solicitud de actualización:', error);
         throw error;
     }
 };
 
-export const deleteadjuntos = async (id) => {
+export const deleteAdjunto = async (id_u, id) => {
     try {
-        const response = await fetch(`${url}adjuntos/${id}`, {
+        const response = await fetch(`${url}${id_u}/adjuntos/${id}`, {
             method: 'DELETE'
         });
 
         if (!response.ok) {
             const errorText = await response.text();
-            console.error('Error al eliminar el predio:', errorText);
-            throw new Error(`Error al eliminar el predio: ${errorText}`);
+            throw new Error(`Error al eliminar el adjunto: ${errorText}`);
         }
 
-        // Si la respuesta es exitosa pero no contiene contenido, simplemente retornamos true
-        if (response.status === 204) {
-            return true;
-        }
-
-        // Si hay contenido, intentamos parsearlo como JSON
-        const responseData = await response.json();
-        return responseData;
+        return response.status === 204 ? true : await response.json();
     } catch (error) {
         console.error('Error en la solicitud de eliminación:', error);
         throw error;
     }
-}; 
+};

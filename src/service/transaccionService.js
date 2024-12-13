@@ -10,23 +10,37 @@ const handleResponse = async (response) => {
     return await response.json();
 };
 
-// Obtener las transacciones con filtros
-export const fetchTransacciones = async (fechaInicio, fechaFin) => {
-    const idUsuario = getCookie("id_u"); // Obtener el usuario desde las cookies
-    if (!idUsuario) {
-        throw new Error("El ID del usuario no está disponible.");
+// Función para realizar la solicitud de las transacciones con autenticación
+const fetchWithAuth = async (url, options = {}) => {
+    const headers = {
+        ...options.headers,
+        "Content-Type": "application/json",
+    };
+
+    // Obtener el token de autenticación de las cookies (si estás usando cookies para el manejo de sesión)
+    const authToken = getCookie("auth_token"); 
+    if (authToken) {
+        headers["Authorization"] = `Bearer ${authToken}`; // Asegúrate de que el backend espere un token en la cabecera Authorization
     }
 
+    return fetch(url, {
+        ...options,
+        headers,
+        credentials: "include", // Incluir cookies en las solicitudes (solo si usas cookies)
+    });
+};
+
+// Obtener las transacciones, con o sin filtros
+export const fetchTransacciones = async (fechaInicio, fechaFin) => {
     const queryParams = new URLSearchParams();
     if (fechaInicio) queryParams.append("fechaInicio", fechaInicio);
     if (fechaFin) queryParams.append("fechaFin", fechaFin);
-    queryParams.append("idUsuario", idUsuario);
 
     try {
-        const response = await fetch(`${url}transacciones?${queryParams}`);
+        const response = await fetchWithAuth(`${url}transacciones?${queryParams}`);
         return await handleResponse(response);
     } catch (error) {
-        console.error("Error al obtener transacciones:", error);
+        console.error("Error al obtener las transacciones:", error);
         throw error;
     }
 };
@@ -45,7 +59,7 @@ export const fetchTransaccion = async (id) => {
 // Obtener todos los usuarios
 export const fetchUsuarios = async () => {
     try {
-        const response = await fetch(`${url}usuarios`);
+        const response = await fetch(`${url}usuarios/`);
         if (!response.ok) {
             throw new Error('Error al obtener usuarios');
         }
@@ -54,4 +68,13 @@ export const fetchUsuarios = async () => {
         console.error("Error al obtener usuarios:", error);
         throw error;
     }
+};
+
+// Obtener un usuario por ID
+export const fetchUsuario = async (id) => {
+    const response = await fetch(`${url}usuarios/${id}`);
+    if (!response.ok) {
+        throw new Error(`Error al obtener el usuario con ID: ${id}`);
+    }
+    return response.json();
 };

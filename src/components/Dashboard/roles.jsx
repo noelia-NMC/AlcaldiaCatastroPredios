@@ -29,7 +29,6 @@ const permisosDisponibles = [
   { value: 'Visualizacion', label: 'Visualización' }
 ];
 
-// Suponiendo que tienes el ID del usuario autenticado en `userID`
 const userID = 1; // Cambia esto según cómo obtengas el ID del usuario autenticado
 
 const Roles = () => {
@@ -38,6 +37,7 @@ const Roles = () => {
   const [selectedPermisos, setSelectedPermisos] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [editRoleId, setEditRoleId] = useState(null);
+  const [newEstado, setNewEstado] = useState(true); // Inicializa como true o false
 
   useEffect(() => {
     loadRoles();
@@ -54,38 +54,39 @@ const Roles = () => {
 
   const handleCreateOrUpdateRole = async (e) => {
     e.preventDefault();
-  
+
     if (!newRoleName.trim()) {
-      toast.error('Por favor, ingrese un nombre para el rol');
-      return;
+        toast.error('Por favor, ingrese un nombre para el rol');
+        return;
     }
-  
+
     if (selectedPermisos.length === 0) {
-      toast.error('Por favor, seleccione al menos un permiso');
-      return;
+        toast.error('Por favor, seleccione al menos un permiso');
+        return;
     }
-  
+
     const roleData = {
-      NombreRol: newRoleName,
-      Estado: true,
-      Permisos: selectedPermisos.map(p => p.value),
+        NombreRol: newRoleName,
+        Estado: newEstado, // Asegúrate de que este valor sea booleano
+        Permisos: selectedPermisos.map(p => p.value),
     };
-  
+
     try {
-      if (isEditing) {
-        await updateRol(userID, editRoleId, roleData);
-        toast.success('Rol actualizado correctamente');
-      } else {
-        await createRol(userID, roleData);
-        toast.success('Nuevo rol creado correctamente');
-      }
-      resetForm();
-      loadRoles();
+        if (isEditing) {
+            await updateRol(userID, editRoleId, { ...roleData, IdRol: editRoleId }); // Incluye IdRol solo al actualizar
+            toast.success('Rol actualizado correctamente');
+        } else {
+            await createRol(userID, roleData); // Pasa userID y roleData
+            toast.success('Nuevo rol creado correctamente');
+        }
+        resetForm();
+        loadRoles();
     } catch (error) {
-      toast.error(`Error al ${isEditing ? 'actualizar' : 'crear'} el rol: ${error.message}`);
+        toast.error(`Error al ${isEditing ? 'actualizar' : 'crear'} el rol: ${error.message}`);
     }
-  };
-  
+};
+
+
   const handleEditRole = (role) => {
     setNewRoleName(role.NombreRol);
     setSelectedPermisos(
@@ -93,6 +94,7 @@ const Roles = () => {
     );
     setEditRoleId(role.IdRol);
     setIsEditing(true);
+    setNewEstado(role.Estado); // Establece el estado del rol al editar
   };
 
   const handleDeleteRole = async (roleId) => {
@@ -123,6 +125,7 @@ const Roles = () => {
     setSelectedPermisos([]);
     setIsEditing(false);
     setEditRoleId(null);
+    setNewEstado(true); // Resetea el estado a true
   };
 
   const handleCancel = () => {
@@ -146,6 +149,14 @@ const Roles = () => {
           onChange={(e) => setNewRoleName(e.target.value)}
           placeholder="Nombre del Rol"
         />
+        <label>
+          Estado:
+          <input
+            type="checkbox"
+            checked={newEstado}
+            onChange={(e) => setNewEstado(e.target.checked)} 
+          />
+        </label>
         <StyledSelect
           isMulti
           name="permisos"
