@@ -359,11 +359,6 @@ const Predio = () => {
                 <SectionTitle>Datos del Predio</SectionTitle>
                 <Input type="text" name="CodCatastral" placeholder="Código Catastral" value={predio.CodCatastral} onChange={handleChange} maxLength={17} required />   
                 <Input type="text" name="IdPredio" placeholder="IdPredio" value={predio.IdPredio} onChange={handleChange} required />
-                <Input type="text" name="Manzano" placeholder="Manzano" value={predio.Manzano} onChange={handleChange} required />
-                <Input type="text" name="NumeroPredio" placeholder="Número de Predio" value={predio.NumeroPredio} onChange={handleChange} required />
-                <Input type="text" name="Bloque" placeholder="Bloque" value={predio.Bloque} onChange={handleChange} required />
-                <Input type="text" name="UnidadCat" placeholder="Unidad Catastral" value={predio.UnidadCat} onChange={handleChange} required />
-                <Input type="text" name="SubD" placeholder="SubD" value={predio.SubD} onChange={handleChange} required />
                 <Select name="TipoPredio" value={predio.TipoPredio} onChange={handleChange} required>
                   <option value="">Seleccionar Tipo de Predio</option>
                   {tipoPredioOptions.map(option => (
@@ -380,9 +375,7 @@ const Predio = () => {
                 </Select>
                 <Input type="date" name="FechaDocumentoAprobador" placeholder="Fecha Documento Aprobador" value={predio.FechaDocumentoAprobador} onChange={handleChange} required />
                 <Input type="text" name="Ruta" placeholder="Ruta" value={predio.Ruta} onChange={handleChange} />
-                <Input type="text" name="Uso" placeholder="Uso" value={predio.Uso} onChange={handleChange} />
-                <Input type="text" name="Planta" placeholder="Planta" value={predio.Planta} onChange={handleChange} />
-              </ModalColumn>
+                </ModalColumn>
   
               <ModalColumn>
                 <SectionTitle>Datos del Propietario</SectionTitle>

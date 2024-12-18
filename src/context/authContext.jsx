@@ -1,6 +1,7 @@
-import { createContext, useState, useContext} from "react";
+import { createContext, useState, useContext } from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
+import { roleConfig } from "../config/rolesConfig";
 
 const AuthContext = createContext();
 
@@ -44,13 +45,26 @@ export const rolesPredefinidos = [
   },
 ];
 
+export const checkPermission = (userPermissions, requiredPermission) => {
+  return userPermissions.includes(requiredPermission);
+};
+
+export const checkComponentAccess = (userRole, component) => {
+  return roleConfig[userRole]?.components.includes(component) || false;
+};
+
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
   const login = (role, username, fullName) => {
-    const permisos = rolesPredefinidos.find(r => r.NombreRol === role)?.Permisos || [];
-    setUser({ role, username, fullName, permisos });
+    const permisos = roleConfig[role]?.permissions || [];
+    setUser({ 
+      role, 
+      username, 
+      fullName, 
+      permisos 
+    });
     navigate("/dashboard");
   };
 
@@ -83,7 +97,14 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user,login, logout, updateUser }}>
+    <AuthContext.Provider value={{ 
+      user, 
+      login, 
+      logout, 
+      updateUser,
+      checkPermission: (permission) => checkPermission(user?.permisos || [], permission),
+      checkComponentAccess: (component) => checkComponentAccess(user?.role, component)
+    }}>
       {children}
     </AuthContext.Provider>
   );

@@ -13,7 +13,7 @@ import {
 import PropTypes from "prop-types";
 
 const Sidebar = ({ 
-  sidebarOpen, 
+  sidebarOpen,  
   toggleSidebar, 
   setActiveComponent,
   activeComponent 
@@ -22,6 +22,11 @@ const Sidebar = ({
     { 
       name: "Rol", 
       component: "rol", 
+      icon: FaUserCog 
+    },
+    { 
+      name: "Permisos", 
+      component: "permisos", 
       icon: FaUserCog 
     },
     { 

@@ -28,7 +28,7 @@ export const createRol = async (id_u, rol) => {
         Permisos: Array.isArray(Permisos) ? Permisos.map(p => String(p)) : [], // Asegúrate de que sea un array
     };
 
-    const response = await fetch(`http://localhost:8000/api/${id_u}/roles/`, {
+    const response = await fetch(`${url}${id_u}/roles/`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

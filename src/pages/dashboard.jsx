@@ -10,6 +10,7 @@ import Layout from "../components/Layout/layout";
 import Usuario from "../components/Dashboard/usuario";
 import Predio from "../components/Dashboard/predio";
 import Roles from "../components/Dashboard/roles";
+import Permisos from "../components/Dashboard/permisos";
 import Transacciones from "../components/Dashboard/transacciones";
 import { 
   DashboardContainer, 
@@ -25,6 +26,12 @@ const dashboardItems = [
   {
     id: "rol",
     title: "Roles",
+    icon: ShieldCheck,
+    description: "Gestión de accesos"
+  },
+  {
+    id: "permisos",
+    title: "Permisos",
     icon: ShieldCheck,
     description: "Gestión de accesos"
   },
@@ -99,6 +106,13 @@ const Dashboard = () => {
           <>
             <BackButton />
             <Roles />
+          </>
+        );
+        case "permisos":
+        return (
+          <>
+            <BackButton />
+            <Permisos />
           </>
         );
       case "usuario":

@@ -146,12 +146,6 @@ export const AddButton = styled.button`
   }
 `;
 
-export const ButtonContainer = styled.div`
-  display: flex;
-  gap: 0.5rem;
-  justify-content: flex-end;
-`;
-
 export const ActionIcon = styled.button`
   background: none;
   border: none;
@@ -216,30 +210,6 @@ export const StyledFileList = styled.ul`
   }
 `;
 
-// Modal
-export const ModalContent = styled.div`
-  background: white;
-  border-radius: 12px;
-  padding: 2rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-`;
-
-export const ModalTitle = styled.h3`
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: ${theme.accent};
-  margin-bottom: 1rem;
-`;
-
-export const ModalColumnsContainer = styled.div`
-  display: flex;
-  gap: 1.5rem;
-`;
-
-export const ModalColumn = styled.div`
-  flex: 1;
-`;
-
 // PDF Viewer
 export const PDFViewerContainer = styled.div`
   width: 100%;
@@ -250,34 +220,6 @@ export const PDFViewerContainer = styled.div`
   background: white;
 `;
 
-export const modalStyles = {
-  overlay: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    zIndex: 1000,
-  },
-  content: {
-    borderRadius: '12px',
-    padding: '2rem',
-    maxWidth: '600px',
-    margin: 'auto',
-  },
-};
-
-// Definición del componente Button
-export const Button = styled.button`
-  padding: 0.6rem;
-  background: #00a684;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-size: 0.8rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  &:hover {
-    filter: brightness(105%);
-  }
-`;
 
 // Definición del componente Form
 export const Form = styled.form`
@@ -363,4 +305,74 @@ export const Title = styled.h2`
   display: flex;
   align-items: center;
   gap: 0.5rem;
+`;
+
+// Estilos mejorados para los modales
+export const ModalContent = styled.div`
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+  max-width: 800px;
+  margin: auto;
+  position: relative;
+`;
+
+export const ModalTitle = styled.h3`
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: ${theme.accent};
+  margin-bottom: 1rem;
+  border-bottom: 2px solid ${theme.primaryLight};
+  padding-bottom: 0.5rem;
+`;
+
+export const ModalColumnsContainer = styled.div`
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap; // Permitir que las columnas se ajusten en pantallas más pequeñas
+`;
+
+export const ModalColumn = styled.div`
+  flex: 1;
+  min-width: 250px; // Asegura que las columnas no sean demasiado estrechas
+`;
+
+export const ButtonContainer = styled.div`
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+`;
+
+// Estilo para el overlay del modal
+export const modalStyles = {
+  overlay: {
+    backgroundColor: 'rgba(0, 0, 0, 0.7)', // Color más oscuro para el fondo
+    zIndex: 1000,
+  },
+  content: {
+    borderRadius: '12px',
+    padding: '0', // Remover padding del contenido para usar solo en ModalContent
+    maxWidth: '800px',
+    margin: 'auto',
+  },
+};
+
+// Estilo para los botones dentro del modal
+export const Button = styled.button`
+  height: 50px;
+  padding: 0.8rem 1.2rem;
+  background: ${theme.primary};
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: ${theme.primaryLight};
+    transform: scale(1.05); // Efecto de escala al pasar el mouse
+  }
 `;

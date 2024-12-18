@@ -52,7 +52,7 @@ const Roles = () => {
     }
   };
 
-  const handleCreateOrUpdateRole = async (e) => {
+ const handleCreateOrUpdateRole = async (e) => {
     e.preventDefault();
 
     if (!newRoleName.trim()) {
@@ -154,7 +154,7 @@ const Roles = () => {
           <input
             type="checkbox"
             checked={newEstado}
-            onChange={(e) => setNewEstado(e.target.checked)} 
+            onChange={(e) => setNewEstado(e.target.checked)} // Cambia el estado basado en el checkbox
           />
         </label>
         <StyledSelect
